@@ -1,0 +1,8 @@
+{
+  "templates": {
+    "source": "/App/Views/",
+    "cahced": "/App/Cached/Views/"
+  },
+  "controllers": "App/Controllers/",
+  "modules": "App/Modules/"
+}

@@ -1,0 +1,50 @@
+<?php
+
+namespace GRA;
+
+// get components from input url
+// url /home/{variable name}
+
+class Router{
+    static $routes = [];
+    public $path;
+    public $variables;
+    public $controller;
+    public $method;
+
+    public function __construct($path, $variables, $controller, $method){
+        $this->path = $path;
+        $this->variables = $variables;
+        $this->controller = $controller;
+        $this->method = $method;
+    }
+
+    public static function check($url){
+        foreach(static::$routes as $route)
+            if(preg_match($route->path, $url) ? 1 : 0){
+                $route->fill($url);
+                return $route;
+            }else
+                return new Router(null, null, null, null);
+    }
+
+    public static function addRoute($route, $controller){
+        $controller = preg_split(':', $controller);
+        preg_match_all("/\{(.+?)\}/", $route, $names);
+        $parsed_route = '/' . preg_replace_callback("/\{(.+?)\}|\//", 'static::replace', $route) . '$/';
+        static::$routes[] = new Router($parsed_route, $names[1], $controller[0], $controller[1]);
+    }
+
+    public function fill($url){
+        preg_match($this->path, $url, $result);
+        array_shift($result);
+        $names = array_combine($this->variables, $result);
+        foreach ($names as $key => $value)
+            $this->{$key} = $value;
+    }
+
+    private static function replace($replacement){
+        if($replacement[0] == '/') return '\/';
+        else return '(.+?)';
+    }
+}
