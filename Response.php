@@ -7,7 +7,7 @@ class Response{
     public $content;
 
     public function __construct($content){
-        if(!is_string($content))
+        if(!is_string($content) && !is_int($content))
             $this->json($content);
         else
             $this->content = $content;

@@ -20,7 +20,7 @@ class App{
         static::autoloadInit();
         static::loadConfig();
         static::initRoutes();
-        static::route();
+        //static::route();
     }
 
     public static function preparePath($path){
@@ -42,10 +42,12 @@ class App{
     }
 
     public static function getResponse(){
+        self::route();
         return static::$response->get();
     }
 
     public static function returnResponse(){
+        self::route();
         static::$response->show();
         exit();
     }
@@ -63,8 +65,11 @@ class App{
         spl_autoload_register(function ($name) {
             list($vendor, $module) = explode('\\', $name);
 
-            if (!empty($module))
-                include $_SERVER['DOCUMENT_ROOT'] . '/App/Controllers/' . $module . '.php';
+            if (!empty($module)){
+                include_once $_SERVER['DOCUMENT_ROOT'] . '/App/Controllers/' . $module . '.php';
+                include_once $_SERVER['DOCUMENT_ROOT'] . '/App/Models/' . $module . '.php';
+            }
+
         });
 
     }
