@@ -2,7 +2,7 @@
 
 namespace GRA;
 
-class Viev{
+class View{
     private $sourcesPath;
     private $cachedPath;
     public $name;
@@ -16,16 +16,17 @@ class Viev{
     }
 
     private function prepareSourcePath($string){
-        return $this->sourcesPath . preg_replace("/\./", $string) . '.so.php';
+        return App::$rootPath . $this->sourcesPath . preg_replace("/\./", '/', $string) . '.so.php';
     }
 
     private function prepareCahcedPath($string){
-        return $this->cachedPath. $string . '.php';
+        return App::$rootPath . $this->cachedPath. $string . '.php';
     }
 
     private function updateCache($source, $cache){
         $so_text = file_get_contents($source);
-        $so_text = preg_replace("/\{\{(.+?)\}\}/g", "<?php $1 ?>");
+        $so_text = preg_replace("/\{\{(.+?)\}\}/", "<?= $1 ?>", $so_text);
+
         file_put_contents($cache, $so_text);
     }
 
@@ -33,17 +34,26 @@ class Viev{
         $source = $this->prepareSourcePath($this->name);
         $cache = $this->prepareCahcedPath($this->name);
 
-        if(fileatime($source) > fileatime($cache))
+        if(fileatime($source) > fileatime($cache) || App::$config->DevelopMode)
             $this->updateCache($source, $cache);
     }
 
     public function load(){
         $cache = $this->prepareCahcedPath($this->name);
         $this->checkLastCached();
+        extract($this->data);
         ob_start();
         include $cache;
         $html = ob_get_clean();
         ob_end_clean();
         return $html;
+    }
+
+    public function get(){
+        return $this->load();
+    }
+
+    public function show(){
+        echo $this->load();
     }
 }

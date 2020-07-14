@@ -6,6 +6,8 @@ class App{
     public static $config;
     public static $url;
     private static $app;
+    private static $response;
+    public static $rootPath;
 
     private function __construct(){
 
@@ -14,20 +16,38 @@ class App{
     public static function init(){
         static::$app = new App();
         static::$url = $_SERVER['REQUEST_URI'];
+        static::$rootPath = $_SERVER['DOCUMENT_ROOT'];
         static::autoloadInit();
         static::loadConfig();
+        static::initRoutes();
         static::route();
+    }
+
+    public static function preparePath($path){
+        return $_SERVER['DOCUMENT_ROOT'] . "/" . $path;
+    }
+
+    private static function initRoutes(){
+        $routesDirectory = static::preparePath(static::$config->routes);
+        include_once $routesDirectory;
     }
 
     public static function route(){
         $route = Router::check(static::$url);
-        $controller = new $route->controller();
+        if(!$route) return;
+        $className = 'App\\' . $route->controller;
+        $controller = new $className();
         $response = $controller->{$route->method}();
-        static::returnResponse($response);
+        static::$response = $response;
     }
 
-    public static function returnResponse($response){
-        $response->show();
+    public static function getResponse(){
+        return static::$response->get();
+    }
+
+    public static function returnResponse(){
+        static::$response->show();
+        exit();
     }
 
     public static function get($name){
@@ -44,7 +64,7 @@ class App{
             list($vendor, $module) = explode('\\', $name);
 
             if (!empty($module))
-                include $_SERVER['DOCUMENT_ROOT'] . '/App/' . implode('/', $module). '.php';
+                include $_SERVER['DOCUMENT_ROOT'] . '/App/Controllers/' . $module . '.php';
         });
 
     }

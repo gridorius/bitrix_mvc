@@ -1,8 +1,10 @@
 {
+  "DevelopMode": true,
   "templates": {
     "source": "/App/Views/",
-    "cahced": "/App/Cached/Views/"
+    "cached": "/App/Cached/Views/"
   },
   "controllers": "App/Controllers/",
-  "modules": "App/Modules/"
+  "modules": "App/Modules/",
+  "routes": "App/Routes/Routes.php"
 }

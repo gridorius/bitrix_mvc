@@ -22,6 +22,10 @@ class Response{
         $this->headers[] = $header;
     }
 
+    public function get(){
+        return $this->content;
+    }
+
     public function show(){
         foreach($this->headers as $header)
             header($header);

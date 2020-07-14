@@ -2,4 +2,4 @@
 
 namespace GRA;
 
-//App::init();
+App::init();
