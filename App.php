@@ -54,7 +54,8 @@ class App{
     public static function returnResponse(){
         self::route();
         static::$response->show();
-        exit();
+        if(static::$response->isJson())
+            exit();
     }
 
     public static function get($name){

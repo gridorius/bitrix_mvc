@@ -2,13 +2,14 @@
 
 namespace GRA;
 
-class View{
+class View extends Response {
     private $sourcesPath;
     private $cachedPath;
     public $name;
     public $data;
 
     public function __construct($name, $data){
+        parent::__construct();
         $this->sourcesPath = App::$config->templates->source;
         $this->cachedPath = App::$config->templates->cached;
         $this->name = $name;
@@ -44,16 +45,19 @@ class View{
         extract($this->data);
         ob_start();
         include $cache;
-        $html = ob_get_clean();
+        $html = ob_get_contents();
         ob_end_clean();
-        return $html;
+
+        $this->setContent($html);
     }
 
     public function get(){
-        return $this->load();
+        $this->load();
+        return parent::get();
     }
 
     public function show(){
-        echo $this->load();
+        $this->load();
+        parent::show();
     }
 }

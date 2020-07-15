@@ -7,7 +7,7 @@ class Response{
     public $content;
     public $json = false;
 
-    public function __construct($content){
+    public function __construct($content = ''){
         if(!is_string($content) && !is_int($content))
             $this->json($content);
         else
@@ -19,12 +19,17 @@ class Response{
     }
 
     public function json($object){
+        $this->json = true;
         $this->addHeader('Content-Type: application/json');
         $this->content = json_encode($object);
     }
 
     public function addHeader($header){
         $this->headers[] = $header;
+    }
+
+    public function SetContent($content){
+        $this->content = $content;
     }
 
     public function get(){
