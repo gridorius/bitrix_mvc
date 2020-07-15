@@ -34,7 +34,10 @@ class App{
 
     public static function route(){
         $route = Router::check(static::$url);
-        if(!$route) return;
+        if(!$route->controller) {
+            static::$response = new Response(404);
+            return;
+        }
         $className = 'App\\' . $route->controller;
         $controller = new $className();
         $response = $controller->{$route->method}();
