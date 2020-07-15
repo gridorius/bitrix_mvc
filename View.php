@@ -3,6 +3,11 @@
 namespace GRA;
 
 class View extends Response {
+    protected static $replacement = [
+        "/\{\{(.+?)\}\}/" => "<?= $1 ?>",
+        "/@foreach\((.+?)\)/" => "<? foreach($1): ?>",
+        "/@endforeach/" => "<? endforeach; ?>"
+    ];
     private $sourcesPath;
     private $cachedPath;
     public $name;
@@ -26,8 +31,7 @@ class View extends Response {
 
     private function updateCache($source, $cache){
         $so_text = file_get_contents($source);
-        $so_text = preg_replace("/\{\{(.+?)\}\}/", "<?= $1 ?>", $so_text);
-
+        $so_text = preg_replace(array_keys(static::$replacement), array_values(static::$replacement), $so_text);
         file_put_contents($cache, $so_text);
     }
 

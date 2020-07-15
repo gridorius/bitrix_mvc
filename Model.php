@@ -24,7 +24,7 @@ class Model{
     }
 
 
-    // ('ID=21', 'name=stas', 'age>20')
+    // ('ID=21', 'name=stas|kik|as|dfd', 'age>20')
     public function where(...$terms){
         $this->terms += $terms;
         return $this;
