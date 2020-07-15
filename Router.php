@@ -41,6 +41,7 @@ class Router{
         $names = array_combine($this->variables, $result);
         foreach ($names as $key => $value)
             $this->{$key} = $value;
+        $this->variables = $names;
     }
 
     private static function replace($replacement){

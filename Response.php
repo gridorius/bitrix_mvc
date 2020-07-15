@@ -5,12 +5,17 @@ namespace GRA;
 class Response{
     public $headers;
     public $content;
+    public $json = false;
 
     public function __construct($content){
         if(!is_string($content) && !is_int($content))
             $this->json($content);
         else
             $this->content = $content;
+    }
+
+    public function isJSon(){
+        return $this->json;
     }
 
     public function json($object){

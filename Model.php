@@ -30,7 +30,17 @@ class Model{
         return $this;
     }
 
+    public function clearWhere(...$terms){
+        $this->terms = $terms;
+        return $this;
+    }
+
     public function select(...$items){
+        $this->select += $items;
+        return $this;
+    }
+
+    public function clearSelect(...$items){
         $this->select = $items;
         return $this;
     }
@@ -57,7 +67,17 @@ class Model{
     public function get(){
         $arFilter = $this->getPrepareTerms();
         $this->result = (new static::$iblockClass)->{static::$selectMethodName}([], $arFilter, false, false, $this->select);
+        $this->clearSelect()->clearWhere();
         return $this;
+    }
+
+    public function getElementArray(){
+        $className = static::class;
+        $arResult = [];
+        while($item = $this->result->GetNextElement())
+            $arResult[] = $item;
+
+        return $arResult;
     }
 
     public function getArray(){
