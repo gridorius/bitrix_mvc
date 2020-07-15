@@ -7,6 +7,7 @@ class Request{
     public static $post;
     public static $get;
     public static $urlVar;
+    public static $method;
     private static $simple;
 
     private function __construct(){
@@ -14,6 +15,11 @@ class Request{
         $this->post = static::$post;
         $this->get = static::$get;
         $this->urVar = static::$urlVar;
+        $this->method = static::$method;
+    }
+
+    public static function setUrlVariables($urlVariables){
+        static::$urlVar = $urlVariables;
     }
 
     public static function getSimple(){
@@ -28,11 +34,11 @@ class Request{
         elseif(static::$urlVar[$name]) return static::$urlVar[$name];
     }
 
-    public static function init($urlVariables){
+    public static function init(){
         static::$server = $_SERVER;
         static::$post = $_POST;
         static::$get = $_GET;
-        static::$urlVar = $urlVariables;
+        static::$method = strtolower($_SERVER['REQUEST_METHOD']);
 
         $className = static::class;
         static::$simple = new $className();

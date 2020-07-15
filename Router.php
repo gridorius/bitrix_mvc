@@ -10,7 +10,8 @@ class Router{
     public $path;
     public $variables;
     public $controller;
-    public $method;
+    public $method = 'get';
+    public $requestMethod;
 
     public function __construct($path, $variables, $controller, $method){
         $this->path = $path;
@@ -19,9 +20,13 @@ class Router{
         $this->method = $method;
     }
 
+    public function setRequestMethod($method){
+        $this->requestMethod = $method;
+    }
+
     public static function check($url){
         foreach(static::$routes as $route)
-            if(preg_match($route->path, $url) ? 1 : 0){
+            if(preg_match($route->path, $url) && $route->requestMethod == Request::$method){
                 $route->fill($url);
                 return $route;
             }else
@@ -32,7 +37,23 @@ class Router{
         $controller = explode(':', $controller);
         preg_match_all("/\{(.+?)\}/", $route, $names);
         $parsed_route = '/' . preg_replace_callback("/\{(.+?)\}|\//", 'static::replace', $route) . '$/';
-        static::$routes[] = new Router($parsed_route, $names[1], $controller[0], $controller[1]);
+        return static::$routes[] = new Router($parsed_route, $names[1], $controller[0], $controller[1]);
+    }
+
+    public static function get($route, $controller){
+        static::addRoute($route, $controller)->setRequestMethod('get');
+    }
+
+    public static function post($route, $controller){
+        static::addRoute($route, $controller)->setRequestMethod('post');
+    }
+
+    public static function pull($route, $controller){
+        static::addRoute($route, $controller)->setRequestMethod('pull');
+    }
+
+    public static function delete($route, $controller){
+        static::addRoute($route, $controller)->setRequestMethod('delete');
     }
 
     public function fill($url){

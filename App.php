@@ -33,8 +33,9 @@ class App{
     }
 
     public static function route(){
+        Request::init();
         $route = Router::check(static::$url);
-        Request::init($route->variables);
+        Request::setUrlVariables($route->variables);
         if(!$route->controller) {
             static::$response = new Response('');
             return;
