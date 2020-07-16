@@ -6,7 +6,10 @@ class View extends Response {
     protected static $replacement = [
         "/\{\{(.+?)\}\}/" => "<?= $1 ?>",
         "/@foreach\((.+?)\)/" => "<? foreach($1): ?>",
-        "/@endforeach/" => "<? endforeach; ?>"
+        "/@endforeach/" => "<? endforeach; ?>",
+        "/@if\((.+?)\)/" => "<? if($1): ?>",
+        "/@elseif\((.+?)\)/" => "<? elseif($1): ?>",
+        "/@endif/" => "<? endif; ?>"
     ];
     private $sourcesPath;
     private $cachedPath;

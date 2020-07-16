@@ -9,6 +9,7 @@ class Model{
     protected static $iblockClass = CIBlock;
     protected static $selectMethodName = 'GetList';
     protected $terms = [];
+    protected $termsRaw = [];
     protected $select = [];
     public $result;
     public $arResult = [];
@@ -27,6 +28,11 @@ class Model{
     // ('ID=21', 'name=stas|kik|as|dfd', 'age>20')
     public function where(...$terms){
         $this->terms += $terms;
+        return $this;
+    }
+
+    public function whereRaw($array){
+        $this->termsRaw += $array;
         return $this;
     }
 
@@ -61,14 +67,20 @@ class Model{
             }, $term);
         }
 
+        $arFilter += $this->termsRaw;
+
         return $arFilter;
     }
 
     public function get(){
         $arFilter = $this->getPrepareTerms();
-        $this->result = (new static::$iblockClass)->{static::$selectMethodName}([], $arFilter, false, false, $this->select);
+        $this->getResult($arFilter);
         $this->clearSelect()->clearWhere();
         return $this;
+    }
+
+    public function getResult($arFilter){
+        $this->result = (new static::$iblockClass)->{static::$selectMethodName}([], $arFilter, false, false, $this->select);
     }
 
     public function getElementArray(){

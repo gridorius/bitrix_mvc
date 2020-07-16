@@ -29,8 +29,13 @@ class Router{
             if(preg_match($route->path, $url) && $route->requestMethod == Request::$method){
                 $route->fill($url);
                 return $route;
-            }else
-                return new Router(null, null, null, null);
+            }
+
+        return static::getEmpty();
+    }
+
+    public static function getEmpty(){
+        return new Router(null, null, null, null);
     }
 
     public static function addRoute($route, $controller){

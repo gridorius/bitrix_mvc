@@ -15,12 +15,11 @@ class App{
 
     public static function init(){
         static::$app = new App();
-        static::$url = $_SERVER['REQUEST_URI'];
+        static::$url = $_SERVER['SCRIPT_URL'];
         static::$rootPath = $_SERVER['DOCUMENT_ROOT'];
         static::autoloadInit();
         static::loadConfig();
         static::initRoutes();
-        //static::route();
     }
 
     public static function preparePath($path){
