@@ -9,7 +9,10 @@ class View extends Response {
         "/@endforeach/" => "<? endforeach; ?>",
         "/@if\((.+?)\)/" => "<? if($1): ?>",
         "/@elseif\((.+?)\)/" => "<? elseif($1): ?>",
-        "/@endif/" => "<? endif; ?>"
+        "/@endif/" => "<? endif; ?>",
+        "/@view\((.+?)\)/" => "partialView($1)->show()",
+        "/@js\((.+?)\)/" => "<script src='$1'></script>",
+        "/@css\((.+?)\)/" => "<link href='$1'></link>"
     ];
     private $sourcesPath;
     private $cachedPath;
