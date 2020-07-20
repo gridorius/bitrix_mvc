@@ -10,7 +10,8 @@ class View extends Response {
         "/@if\((.+?)\)/" => "<? if($1): ?>",
         "/@elseif\((.+?)\)/" => "<? elseif($1): ?>",
         "/@endif/" => "<? endif; ?>",
-        "/@view\((.+?)\)/" => "partialView($1)->show()",
+        "/@view\((.+?)\)/" => "<? partialView($1)->show(); ?>",
+        "/@vdump\((.+?)\)/" => "<? var_dump($1); ?>",
         "/@js\((.+?)\)/" => "<script src='$1'></script>",
         "/@css\((.+?)\)/" => "<link href='$1'></link>"
     ];

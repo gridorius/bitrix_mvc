@@ -11,6 +11,7 @@ class Model{
     protected $terms = [];
     protected $termsRaw = [];
     protected $select = [];
+    protected $pagination = false;
     public $result;
     public $arResult = [];
     public $iblockId;
@@ -43,6 +44,11 @@ class Model{
 
     public function select(...$items){
         $this->select += $items;
+        return $this;
+    }
+
+    public function pagination($pageNum, $pageSize){
+        $this->pagination = ["nPageSize"=>$pageNum, "iNumPage"=> $pageNum];
         return $this;
     }
 
@@ -80,7 +86,7 @@ class Model{
     }
 
     public function getResult($arFilter){
-        $this->result = (new static::$iblockClass)->{static::$selectMethodName}([], $arFilter, false, false, $this->select);
+        $this->result = (new static::$iblockClass)->{static::$selectMethodName}([], $arFilter, false, $this->pagination, $this->select);
     }
 
     public function getElementArray(){
