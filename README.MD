@@ -2,14 +2,15 @@
 #Мы Не Утонем
 #Не марай руки!
 
-local/GRA - туда не лезь
-
-App - корень приложения
-App/Cached - кеш шаблонизатора
-App/Controllers - контроллеры
-App/Models - модели
-App/Routes - роутинг
-App/Views - шаблоны(представления)
+    local/GRA - туда не лезь
+***
+#### Директории приложения
+* App - корень приложения
+* App/Cached - кеш шаблонизатора
+* App/Controllers - контроллеры
+* App/Models - модели
+* App/Routes - роутинг
+* App/Views - шаблоны(представления)
 
 ```php
 class Model{
