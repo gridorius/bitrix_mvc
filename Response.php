@@ -39,6 +39,11 @@ class Response{
     public function show(){
         foreach($this->headers as $header)
             header($header);
-        echo $this->content;
+        if($this->isJSon()){
+            ob_end_clean();
+            echo $this->content;
+        }
+        else
+            echo $this->content;
     }
 }

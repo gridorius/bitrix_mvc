@@ -6,7 +6,9 @@ class View extends Response {
     protected static $replacement = [
         "/\{\{(.+?)\}\}/" => "<?= $1 ?>",
         "/@foreach\((.+?)\)/" => "<? foreach($1): ?>",
+        "/@for\((.+?)\)/" => "<? for($1): ?>",
         "/@endforeach/" => "<? endforeach; ?>",
+        "/@endfor/" => "<? endfor; ?>",
         "/@if\((.+?)\)/" => "<? if($1): ?>",
         "/@elseif\((.+?)\)/" => "<? elseif($1): ?>",
         "/@endif/" => "<? endif; ?>",
@@ -57,7 +59,7 @@ class View extends Response {
         ob_start();
         include $cache;
         $html = ob_get_contents();
-        ob_end_clean();
+//        ob_end_clean();
 
         $this->setContent($html);
     }
