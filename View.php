@@ -14,8 +14,8 @@ class View extends Response {
         "/@endif/" => "<? endif; ?>",
         "/@view\((.+?)\)/" => "<? partialView($1)->show(); ?>",
         "/@vdump\((.+?)\)/" => "<? var_dump($1); ?>",
-        "/@js\((.+?)\)/" => "<script src='$1'></script>",
-        "/@css\((.+?)\)/" => "<link href='$1'></link>"
+        "/@js\((.+?)\)/" => "<script src='/App/Views/JavaScript/$1.js'></script>",
+        "/@css\((.+?)\)/" => "<link href='/App/Views/Styles/$1.css'></link>"
     ];
     private $sourcesPath;
     private $cachedPath;
@@ -59,7 +59,7 @@ class View extends Response {
         ob_start();
         include $cache;
         $html = ob_get_contents();
-//        ob_end_clean();
+        ob_end_clean();
 
         $this->setContent($html);
     }
