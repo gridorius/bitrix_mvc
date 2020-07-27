@@ -41,7 +41,7 @@ class Router{
     public static function addRoute($route, $controller){
         $controller = explode(':', $controller);
         preg_match_all("/\{(.+?)\}/", $route, $names);
-        $parsed_route = '/' . preg_replace_callback("/\{(.+?)\}|\//", 'static::replace', $route) . '$/';
+        $parsed_route = '/' . preg_replace_callback("/\{(.+?)\}|\//", 'static::replace', $route) . '\/?$/';
         return static::$routes[] = new Router($parsed_route, $names[1], $controller[0], $controller[1]);
     }
 

@@ -1,10 +1,10 @@
 <?php
 
-function view($view, $controller){
+function view($view, $controller = []){
     return new GRA\View($view, $controller);
 }
 
-function partialView($view, $controller){
+function partialView($view, $controller = []){
     return new GRA\PartialView($view, $controller);
 }
 

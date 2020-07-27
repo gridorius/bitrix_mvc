@@ -29,17 +29,15 @@ class Model{
         $this->parametres = $parametres;
     }
 
-
-    // ('ID=21', 'name=stas|kik|as|dfd', 'age>20')
-
     public function add(){
         $parameters = $this->additional + ['IBLOCK_ID' => $this->iblockId,
                 'IBLOCK_SECTION_ID' => $this->sectionId,
                 'PROPERTY_VALUES' => $this->additionalProps];
 
-        $m = (new static::$iblockClass)->Add($parameters);
+        return (new static::$iblockClass)->Add($parameters);
     }
 
+    // ('ID=21', 'name=stas|kik|as|dfd', 'age>20')
     public function where(...$terms){
         $this->terms += $terms;
         return $this;
@@ -100,7 +98,18 @@ class Model{
 
         $arFilter += $this->termsRaw;
 
+        if($this->iblockId)
+            $arFilter['IBLOCK_ID'] = $this->iblockId;
+        if($this->id)
+            $arFilter['ID'] = $this->id;
+        if($this->sectionId)
+            $arFilter['IBLOCK_SECTION_ID'] = $this->sectionId;
+
         return $arFilter;
+    }
+
+    public function getImage(){
+        return \CFile::GetPath($this->PREVIEW_PICTURE) ?? \CFile::GetPath($this->PICTURE);
     }
 
     public function getCount(){
@@ -128,6 +137,9 @@ class Model{
     }
 
     public function getArray(){
+        if(!$this->result)
+            $this->get();
+
         $className = static::class;
         $this->arResult = [];
         while($item = $this->result->GetNext())

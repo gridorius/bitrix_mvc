@@ -12,6 +12,7 @@ class View extends Response {
         "/@if\((.+?)\)/" => "<? if($1): ?>",
         "/@elseif\((.+?)\)/" => "<? elseif($1): ?>",
         "/@endif/" => "<? endif; ?>",
+        "/@title\((.+?)\)/" => "<? \GRA\App::setTitle($1); ?>",
         "/@view\((.+?)\)/" => "<? partialView($1)->show(); ?>",
         "/@vdump\((.+?)\)/" => "<? var_dump($1); ?>",
         "/@js\((.+?)\)/" => "<script src='/App/Views/JavaScript/$1.js'></script>",
@@ -65,12 +66,16 @@ class View extends Response {
     }
 
     public function get(){
-        $this->load();
+        if(!$this->content)
+            $this->load();
+
         return parent::get();
     }
 
     public function show(){
-        $this->load();
+        if(!$this->content)
+            $this->load();
+
         parent::show();
     }
 }
